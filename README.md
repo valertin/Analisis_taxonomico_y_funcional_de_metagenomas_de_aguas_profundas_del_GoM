@@ -27,7 +27,7 @@ Nuestras secuencias provienen de la plataforma Illumina Hi-Seq 2000, 2×100 pair
 
 # Eliminacion de lecturas humanas
 
-Las lecturas crudas (*R1 y *R2) se alinearon con bbmap.sh contra el hg19, de acuerdo con los parámetros publicados en Bushnell (2014).
+Las lecturas crudas (*R1 y *R2) se alinearon con [bbmap.sh](https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbmap-guide/) contra el hg19, de acuerdo con los parámetros publicados en Bushnell (2014).
 
 ## forward
 ```
@@ -43,5 +43,9 @@ $ bbmap.sh minid=0.95 maxindel=3 bwr=0.16 bw=12 quickmatch fast minhits=2 path=/
 El programa [Sickle](https://github.com/najoshi/sickle) se empleó para el control de calidad, truncando la calidad Phred a un valor de 20 (-q 20 es suficiente calidad).
 
 ```
-$ sickle pe -f R1_cleaned.fastq -r R2_cleaned.fastq -t sanger -o R1_cleaned_filtered.fastq -p R2_cleaned_filtered.fastq -s uneven_cleaned_filtered.fastq -n -q 20 -l 50
+$ sickle pe -f R1_cleaned.fastq -r R2_cleaned.fastq -t sanger -o R1_cleaned_filtered.fastq
+-p R2_cleaned_filtered.fastq -s uneven_cleaned_filtered.fastq -n -q 20 -l 50
 ```
+# ``Procesamiento``
+
+a)	El ensamble de los archivos se realizó empleando [MEGAHIT](https://github.com/voutcn/megahit); este permite emplear las secuencias que pasaron el control de calidad, pero que perdieron una lectura paired end (opción -r: uneven_cleaned_filtered.fastq). 
