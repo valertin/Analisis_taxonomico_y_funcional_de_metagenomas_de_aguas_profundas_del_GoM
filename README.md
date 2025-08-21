@@ -48,4 +48,26 @@ $ sickle pe -f R1_cleaned.fastq -r R2_cleaned.fastq -t sanger -o R1_cleaned_filt
 ```
 # ``Procesamiento``
 
-a)	El ensamble de los archivos se realizó empleando [MEGAHIT](https://github.com/voutcn/megahit); este permite emplear las secuencias que pasaron el control de calidad, pero que perdieron una lectura paired end (opción -r: uneven_cleaned_filtered.fastq). 
+## Ensamble: Megahit
+El ensamble de los archivos se realizó empleando [MEGAHIT](https://github.com/voutcn/megahit); este permite emplear las secuencias que pasaron el control de calidad, pero que perdieron una lectura paired end (opción -r: uneven_cleaned_filtered.fastq). 
+
+```
+$ megahit --k-min 27 --k-max 101 --k-step 10 --min-contig-len 500 -1 R1_cleaned_filtered.fastq -2 R2_cleaned_filtered.fastq
+-r uneven_cleaned_filtered.fastq -t $(nproc) -o assembly/
+```
+
+## Calculo de la cobertura de los contigs [BBMap](https://github.com/BioInfoTools/BBMap)
+Para calcular la cobertura de los contigs con BBMap, se utiliza el principio de mapear las lecturas originales (reads) de vuelta a su propio ensamble. El comando bbmap.sh alinea los archivos FASTQ de lecturas (limpios o preprocesados) contra el archivo de contigs (en formato FASTA). La herramienta genera entonces un archivo BAM, que contiene la información de alineamiento para cada lectura. Finalmente, se usa el comando pileup.sh sobre el archivo BAM para generar un reporte de cobertura, que incluye la cobertura promedio por contig (la profundidad de secuenciamiento en cada posición) y la cobertura de bases (el porcentaje del contig cubierto por al menos una lectura).
+
+```
+$ bowtie2-build –threads 12 ../control/final.contigs.newheader.fa ctrl
+$ samtools sort maiz.aligned.sam.bam > maiz.aligned.sam.bam.sorted.bam
+$ samtools index control.aligned.sam.bam.sorted.bam
+```
+
+## pileup.sh 
+Después de mapear las lecturas contra tus contigs con bbmap.sh (que genera un archivo BAM), ejecutas el comando pileup.sh de la suite BBMap usando ese archivo BAM como entrada. Este comando procesa el archivo de alineamiento y calcula automáticamente métricas clave por contig, como la cobertura promedio (Avg_fold), el porcentaje de bases cubiertas (Covered_percent), y la longitud, generando un reporte tabular listo para su análisis posterior.
+
+```
+$ pileup.sh in=mapping/maiz.aligned.sam.gz out=mapping/coverage_maiz.txt 2>&1  | tee mapping/log_maiz_coverage.log
+```
