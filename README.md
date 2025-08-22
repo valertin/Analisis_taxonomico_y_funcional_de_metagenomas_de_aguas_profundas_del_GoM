@@ -65,9 +65,9 @@ $ samtools sort maiz.aligned.sam.bam > maiz.aligned.sam.bam.sorted.bam
 $ samtools index control.aligned.sam.bam.sorted.bam
 ```
 
-## pileup.sh 
+## Calcula información de cobertura por contigs [pileup.sh](https://nf-co.re/modules/bbmap_pileup/) 
 Después de mapear las lecturas contra tus contigs con bbmap.sh (que genera un archivo BAM), ejecutas el comando pileup.sh de la suite BBMap usando ese archivo BAM como entrada. Este comando procesa el archivo de alineamiento y calcula automáticamente métricas clave por contig, como la cobertura promedio (Avg_fold), el porcentaje de bases cubiertas (Covered_percent), y la longitud, generando un reporte tabular listo para su análisis posterior.
 
 ```
-$ pileup.sh in=mapping/maiz.aligned.sam.gz out=mapping/coverage_maiz.txt 2>&1  | tee mapping/log_maiz_coverage.log
+$ pileup.sh in=mapping/aligned.sam.gz out=mapping/coverage.txt 2>&1  | tee mapping/log_coverage.log
 ```
