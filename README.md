@@ -48,7 +48,7 @@ $ sickle pe -f R1_cleaned.fastq -r R2_cleaned.fastq -t sanger -o R1_cleaned_filt
 -p R2_cleaned_filtered.fastq -s uneven_cleaned_filtered.fastq -n -q 20 -l 50
 ```
 # ``Procesamiento``
-# ``Anotación funcional```
+# ``Anotación funcional``
 
 ## Ensamble: Megahit
 El ensamble de los archivos se realizó empleando [MEGAHIT](https://github.com/voutcn/megahit); este permite emplear las secuencias que pasaron el control de calidad, pero que perdieron una lectura paired end (opción -r: uneven_cleaned_filtered.fastq). 
