@@ -95,5 +95,23 @@ KofamKOALA  toma la anotación funcional de PROKKA (específicamente el archivo 
 Web base
 ```
 
-# Anotación taxónomica
+# Anotación taxónomica con [Kraken2](https://github.com/DerrickWood/kraken2)
+Kraken2 asigna taxonomía a los reads de metagenoma mediante un método de coincidencia exacta de k-mers. Para cada lectura, divide su secuencia en pequeños fragmentos de longitud fija (k-mers, por ejemplo k=35) y consulta cada k-mer en una base de datos preconstruida que contiene genomas de referencia asociados a taxones específicos.
 
+```
+kraken2 --db $KRAKEN_DB --paired --threads 24 --report $OUTPUT_DIR/sample_report.txt --output $OUTPUT_DIR/sample_output.kraken
+  $READS_DIR/sample_R1.fastq.gz   $READS_DIR/sample_R2.fastq.gz
+```
+
+# Re-estimación de la abundancia con [Bracken](https://github.com/jenniferlu717/Bracken)
+Bracken (Bayesian Reestimation of Abundance with KrakEN) toma el reporte de Kraken2  y aplica un modelo bayesiano para recalcular y refinar las abundancias relativas de cada taxón.
+
+```
+bracken -d $KRAKEN_DB -i $OUTPUT_DIR/sample_report.txt -o $OUTPUT_DIR/sample_bracken.species -l S -t 50
+```
+
+# Análisis estadisticos y visualización con [R](https://www.r-project.org/)
+
+```
+Uso de R y R studio
+```
