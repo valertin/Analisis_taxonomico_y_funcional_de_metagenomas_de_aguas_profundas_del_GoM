@@ -94,6 +94,7 @@ KofamKOALA  toma la anotación funcional de PROKKA (específicamente el archivo 
 ```
 Web base
 ```
+<img width="795" height="743" alt="image" src="https://github.com/user-attachments/assets/74e05e6c-90de-4742-b754-3580fd667ac7" />
 
 # Anotación taxónomica con [Kraken2](https://github.com/DerrickWood/kraken2)
 Kraken2 asigna taxonomía a los reads de metagenoma mediante un método de coincidencia exacta de k-mers. Para cada lectura, divide su secuencia en pequeños fragmentos de longitud fija (k-mers, por ejemplo k=35) y consulta cada k-mer en una base de datos preconstruida que contiene genomas de referencia asociados a taxones específicos.
