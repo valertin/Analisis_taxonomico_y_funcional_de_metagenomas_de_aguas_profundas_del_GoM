@@ -116,3 +116,17 @@ bracken -d $KRAKEN_DB -i $OUTPUT_DIR/sample_report.txt -o $OUTPUT_DIR/sample_bra
 ```
 Uso de R y R studio
 ```
+
+## Conclusiones
+
+El flujo de trabajo presentado abarca desde el control de calidad de las lecturas hasta la clasificación taxonómica (con herramientas como Kraken2 y Bracken), ensamblaje (con MEGAHIT), anotación funcional (PROKKA, BlastKOALA), se sugiere el uso de herramientas como R para análisis diferencial (DESeq2) y visualización (redes, heatmaps, PCA/PCoA). Los códigos proporcionados son ejemplos generales que requieren ajustes específicos según las características de cada dataset (calidad de lecturas, complejidad de la comunidad, objetivos del estudio). Este pipeline sirve como marco de referencia, pero su aplicación exitosa depende de la optimización para cada caso particular y la integración de evidencias multidisciplinarias.
+
+### Referencias
+
+- Andrews, S. (2010) FastQC: A Quality Control Tool for High Throughput Sequence Data. 
+- Anthony M. Bolger, Marc Lohse, Bjoern Usadel, Trimmomatic: a flexible trimmer for Illumina sequence data, Bioinformatics, Volume 30, Issue 15, August 2014, Pages 2114–2120, https://doi.org/10.1093/bioinformatics/btu170
+- Dinghua Li, Chi-Man Liu, Ruibang Luo, Kunihiko Sadakane, Tak-Wah Lam, MEGAHIT: an ultra-fast single-node solution for large and complex metagenomics assembly via succinct de Bruijn graph, Bioinformatics, Volume 31, Issue 10, May 2015, Pages 1674–1676, https://doi.org/10.1093/bioinformatics/btv033
+- Lu J, Breitwieser FP, Thielen P, Salzberg SL. 2017. Bracken: estimating species abundance in metagenomics data. PeerJ Computer Science 3:e104 https://doi.org/10.7717/peerj-cs.104
+- R Core Team (2025). _R: A Language and Environment for Statistical computing
+- Torsten Seemann, Prokka: rapid prokaryotic genome annotation, Bioinformatics, Volume 30, Issue 14, July 2014, Pages 2068–2069, https://doi.org/10.1093/bioinformatics/btu153
+- Wood, D.E., Lu, J. & Langmead, B. Improved metagenomic analysis with Kraken 2. Genome Biol 20, 257 (2019). https://doi.org/10.1186/s13059-019-1891-0
