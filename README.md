@@ -121,7 +121,7 @@ Uso de R y R studio
 
 ## Conclusiones
 
-El flujo de trabajo presentado abarca desde el control de calidad de las lecturas hasta la clasificación taxonómica (con herramientas como Kraken2 y Bracken), ensamblaje (con MEGAHIT), anotación funcional (PROKKA, BlastKOALA), se sugiere el uso de herramientas como R para análisis diferencial (DESeq2) y visualización (redes, heatmaps, PCA/PCoA). Los códigos proporcionados son ejemplos generales que requieren ajustes específicos según las características de cada dataset (calidad de lecturas, complejidad de la comunidad, objetivos del estudio). Este pipeline sirve como marco de referencia, pero su aplicación exitosa depende de la optimización para cada caso particular y la integración de evidencias multidisciplinarias.
+El flujo de trabajo presentado abarca desde el control de calidad de las lecturas hasta la clasificación taxonómica (con herramientas como Kraken2 y Bracken), ensamblaje (con MEGAHIT), anotación funcional (PROKKA, BlastKOALA), se sugiere el uso de herramientas como R para análisis diferencial (DESeq2) y visualización (redes, heatmaps, PCA/PCoA). Los códigos proporcionados son ejemplos generales que requieren ajustes específicos según las características de cada dataset (calidad de lecturas, complejidad de la comunidad, objetivos del estudio). Este pipeline sirve como marco de referencia, pero su aplicación exitosa depende de la optimización para cada caso particular.
 
 ### Referencias
 
