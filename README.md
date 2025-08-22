@@ -14,7 +14,9 @@ Dr. [Valentín Pérez-Hernández](https://www.researchgate.net/profile/Valentin-
 
 ## ``Introducción``
 
-Se describe el proceso empleado para el análisis de datos metagenomicos provenientes de las aguas profundad del golfo de México. El procesamiento de las secuencias fueron procesadas siguiendo el flujo de trabajo indicado en la figura 1. 
+El estudio de las comunidades microbianas en ambientes extremos, como las aguas profundas, representa un desafío técnico y biológico debido a las condiciones de alta presión, baja temperatura y escasez de nutrientes que caracterizan estos ecosistemas. La metagenómica ha emergido como una herramienta fundamental para explorar la diversidad y funcionalidad de microorganismos no cultivables, permitiendo descifrar su potencial biotecnológico y ecológico. En este trabajo, se describe el proceso empleado para el análisis de datos metagenómicos provenientes de muestras de aguas profundas, utilizando un flujo de trabajo computacional que abarca desde el control de calidad de las secuencias hasta la anotación taxonómica y funcional. Mediante el uso de herramientas como Kraken2 para la clasificación taxonómica, MEGAHIT para el ensamblaje de novo, y PROKKA junto con KEGG para la predicción de funciones metabólicas, se busca caracterizar la composición microbiana y su papel en los ciclos biogeoquímicos en este entorno único. L
+
+Se describe de forma general el proceso empleado para el análisis de datos metagenomicos provenientes de las aguas profundas del golfo de México. El procesamiento de las secuencias fueron procesadas siguiendo el flujo de trabajo indicado en la figura 1. 
 
 <img width="4437" height="2538" alt="METAGENOMIC-Workflow" src="https://github.com/user-attachments/assets/7cf88fce-11fa-4b21-a6a3-1aa4e19dd558" />
 
