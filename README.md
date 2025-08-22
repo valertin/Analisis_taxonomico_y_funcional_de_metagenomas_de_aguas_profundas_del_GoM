@@ -81,7 +81,7 @@ MetaQuast evalúa la calidad de los ensambles generados por MEGAHIT (u otros ens
 metaquast.py -o metaquast/final.contigs.fa
 ```
 
-## Anotación funcional con PROKKA
+## Anotación funcional con [PROKKA](https://github.com/tseemann/prokka)
 La anotación funcional con PROKKA es un proceso automatizado que predice y describe genes en secuencias de contigs, identificando elementos genómicos como genes codificantes de proteínas (CDS), ARN ribosomal (rRNA), ARN de transferencia (tRNA) y otros elementos funcionales. Utiliza la herramienta Prodigal (para predicción de genes) y bases de datos como UniProt, Pfam y NCBI para asignar nombres de genes, productos génicos y números EC (Enzyme Commission), generando archivos de salida estandarizados (GBK, GFF, FAA)
 
 ```
