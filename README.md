@@ -53,7 +53,7 @@ $ sickle pe -f R1_cleaned.fastq -r R2_cleaned.fastq -t sanger -o R1_cleaned_filt
 # ``Anotación funcional``
 
 ## Ensamble: Megahit
-El ensamble de los archivos se realizó empleando [MEGAHIT](https://github.com/voutcn/megahit); este permite emplear las secuencias que pasaron el control de calidad, pero que perdieron una lectura paired end (opción -r: uneven_cleaned_filtered.fastq). 
+El ensamble de los archivos se realizó empleando [MEGAHIT](https://github.com/voutcn/megahit); este permite emplear las secuencias que pasaron el control de calidad, pero que perdieron una lectura paired end. 
 
 ```
 $ megahit --k-min 27 --k-max 101 --k-step 10 --min-contig-len 500 -1 R1_cleaned_filtered.fastq -2 R2_cleaned_filtered.fastq
@@ -65,7 +65,7 @@ Para calcular la cobertura de los contigs con BBMap, se utiliza el principio de 
 
 ```
 $ bowtie2-build –threads 12 ../control/final.contigs.newheader.fa ctrl
-$ samtools sort maiz.aligned.sam.bam > maiz.aligned.sam.bam.sorted.bam
+$ samtools sort sample.aligned.sam.bam > sample.aligned.sam.bam.sorted.bam
 $ samtools index control.aligned.sam.bam.sorted.bam
 ```
 
