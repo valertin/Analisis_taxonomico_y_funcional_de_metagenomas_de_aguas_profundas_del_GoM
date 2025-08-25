@@ -32,23 +32,75 @@ Nuestras secuencias provienen de la plataforma Illumina Hi-Seq 2000, 2×100 pair
 
 Las lecturas crudas (*R1 y *R2) se alinearon con [bbmap.sh](https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbmap-guide/) contra el hg19, de acuerdo con los parámetros publicados en Bushnell (2014).
 
-## forward
+## Comando para forward y reverse
 ```
-$ bbmap.sh minid=0.95 maxindel=3 bwr=0.16 bw=12 quickmatch fast minhits=2 path=/PATH/ref/ qtrim=rl trimq=10 untrim
--Xmx23g in=/PATH/R1.fastq outu=/PATH R1_cleaned.fastq outm=/R1_humanreads.fastq
+$ bbmap.sh \
+  minid=0.95
+  maxindel=3
+  bwr=0.16
+  bw=12
+  quickmatch
+  fast
+  minhits=2
+  path=/PATH/ref/
+  qtrim=rl
+  trimq=10
+  untrim
+  -Xmx23g
+  in=/PATH/R1.fastq
+  outu=/PATH R1_cleaned.fastq
+  outm=/R1_humanreads.fastq
 ```
-## reverse
+
 ```
-$ bbmap.sh minid=0.95 maxindel=3 bwr=0.16 bw=12 quickmatch fast minhits=2 path=/PATH/ref/ qtrim=rl trimq=10 untrim
--Xmx23g in=/PATH/R2.fastq outu=/PATH R2_cleaned.fastq outm=/R2_humanreads.fastq
+Detalles del comando:
+
+* minid=0.95	Establece la identidad mínima de alineamiento en 95%. Solo se consideran lecturas que se alinean con al menos 95% de similitud.
+* maxindel=3	Permite un máximo de 3 inserciones/deleciones por alineamiento. Mejora la precisión en regiones conservadas.
+* bwr=0.16	Define el ratio de retroceso en el algoritmo de alineamiento. Valores bajos hacen el mapeo más estricto.
+* bw=12	Establece el ancho de banda para el alineamiento. Controla cuántas bases se consideran en cada paso.
+* quickmatch	Activa un modo rápido que acelera el mapeo usando coincidencias simplificadas.
+* fast	Usa una heurística rápida para acelerar el proceso, sacrificando algo de sensibilidad.
+* minhits=2	Requiere al menos 2 k-mers coincidentes para considerar una lectura como mapeada.
+* path=/PATH/ref/	Ruta a la carpeta que contiene el índice de referencia (por ejemplo, genoma humano).
+* qtrim=rl	Recorta las lecturas en ambos extremos (right y left) si la calidad cae por debajo del umbral.
+* trimq=10	Umbral de calidad para el recorte. Bases con calidad <10 serán eliminadas en los extremos.
+* untrim	Indica que las lecturas recortadas deben ser reconstruidas a su forma original tras el mapeo.
+* -Xmx23g	Asigna 23 GB de memoria RAM para el proceso (ajusta según tu sistema).
+* in=/PATH/R1.fastq	Archivo de entrada con las lecturas crudas.
+* outu=/PATH/R1_cleaned.fastq	Archivo de salida con las lecturas no mapeadas.
+* outm=/R1_humanreads.fastq	Archivo de salida con las lecturas mapeadas.
 ```
 # Filtrado de calidad
 El programa [Sickle](https://github.com/najoshi/sickle) se empleó para el control de calidad, truncando la calidad Phred a un valor de 20 (-q 20 es suficiente calidad).
 
 ```
-$ sickle pe -f R1_cleaned.fastq -r R2_cleaned.fastq -t sanger -o R1_cleaned_filtered.fastq
--p R2_cleaned_filtered.fastq -s uneven_cleaned_filtered.fastq -n -q 20 -l 50
+$ sickle pe \
+  -f R1_cleaned.fastq \
+  -r R2_cleaned.fastq \
+  -t sanger \
+  -o R1_cleaned_filtered.fastq \
+  -p R2_cleaned_filtered.fastq \
+  -s uneven_cleaned_filtered.fastq \
+  -n \
+  -q 20 \
+  -l 50
 ```
+
+```
+Detalles de los parámetro:
+* pe:	Modo paired-end: procesa lecturas emparejadas.
+* -f: Archivo de lectura forward (R1) ya limpiado.
+* -r: Archivo de lectura reverse (R2) ya limpiado.
+* -t: Formato de calidad de las lecturas (Phred+33, típico en Illumina).
+* -o: Salida de lecturas forward que pasaron el filtro.
+* -p: Salida de lecturas reverse que pasaron el filtro.
+* -s: Lecturas que quedaron sin pareja tras el filtrado (por ejemplo, si R1 pasa pero R2 no).
+* -n: No convierte las bases de baja calidad en "N"; simplemente las recorta.
+* -q: Umbral de calidad, recorta bases con calidad <20 (Phred score).
+* -l: Longitud mínima, descarta lecturas que queden con menos de 50 bases tras el recorte.
+```
+
 # ``Procesamiento``
 # ``Anotación funcional``
 
@@ -56,8 +108,29 @@ $ sickle pe -f R1_cleaned.fastq -r R2_cleaned.fastq -t sanger -o R1_cleaned_filt
 El ensamble de los archivos se realizó empleando [MEGAHIT](https://github.com/voutcn/megahit); este permite emplear las secuencias que pasaron el control de calidad, pero que perdieron una lectura paired end. 
 
 ```
-$ megahit --k-min 27 --k-max 101 --k-step 10 --min-contig-len 500 -1 R1_cleaned_filtered.fastq -2 R2_cleaned_filtered.fastq
--r uneven_cleaned_filtered.fastq -t $(nproc) -o assembly/
+$ megahit \
+  --k-min 27 \
+  --k-max 101 \
+  --k-step 10 \
+  --min-contig-len 500 \
+  -1 R1_cleaned_filtered.fastq \
+  -2 R2_cleaned_filtered.fastq \
+  -r uneven_cleaned_filtered.fastq \
+  -t $(nproc) \
+  -o assembly/
+```
+
+```
+Detalles de los parámetros
+--k-min:	Tamaño mínimo de k-mer usado en el ensamblaje.
+--k-max:	Tamaño máximo de k-mer.
+--k-step:	Incremento entre tamaños de k-mer (usa 27, 37, 47... hasta 101).
+--min-contig-len: Filtra contigs menores a 500 bp en la salida final.
+-1: Lecturas forward (paired-end) ya filtradas.
+-2: Lecturas reverse (paired-end) ya filtradas.
+-r: Lecturas single-end (sin pareja tras filtrado con Sickle).
+-t: Usa todos los núcleos disponibles del procesador para acelerar el ensamblaje.
+-o: Carpeta de salida donde se guardan los contigs ensamblados.
 ```
 
 ## Calculo de la cobertura de los contigs [BBMap](https://github.com/BioInfoTools/BBMap)
@@ -65,17 +138,43 @@ Para calcular la cobertura de los contigs con BBMap, se utiliza el principio de 
 
 ```
 $ bowtie2-build –threads 12 ../control/final.contigs.newheader.fa ctrl
+```
+```
+* bowtie2-build:	Ejecuta el constructor de índice de Bowtie2.
+* --threads: Núcleos de CPU usados en el proceso.
+* final.contigs.fa:	Archivo FASTA que contiene los contigs ensamblados. Este es el archivo que se convertirá en índice.
+* ctrl:	Prefijo del índice de salida. Bowtie2 generará varios archivos con nombres como ctrl.1.bt2, ctrl.2.bt2, etc., que conforman el índice completo.
+```
+```
 $ samtools sort sample.aligned.sam.bam > sample.aligned.sam.bam.sorted.bam
-$ samtools index control.aligned.sam.bam.sorted.bam
+```
+```
+* samtools sort:	Ordena el archivo BAM por posición en el genoma de referencia.
+* sample.aligned.sam.bam:	Archivo BAM de entrada, generado previamente por Bowtie2 u otra herramienta de mapeo.
+* >:	Redirecciona la salida estándar al archivo especificado.
+* sample.aligned.sam.bam.sorted.bam:	Archivo BAM de salida, ya ordenado por coordenadas genómicas.
 ```
 
+```
+$ samtools index control.aligned.sam.bam.sorted.bam -o output
+```
+
+```
+* index	Subcomando que genera un archivo de índice .bai para un archivo BAM.
+* control.aligned.sam.bam.sorted.bam	Archivo BAM de entrada, que debe estar ordenado por coordenadas (output típico de samtools sort).
+* -o:	Permite especificar el nombre del archivo de índice manualment
+```
 ## Calcula información de cobertura por contigs [pileup.sh](https://nf-co.re/modules/bbmap_pileup/) 
 Después de mapear las lecturas contra tus contigs con bbmap.sh (que genera un archivo BAM), ejecutas el comando pileup.sh de la suite BBMap usando ese archivo BAM como entrada. Este comando procesa el archivo de alineamiento y calcula automáticamente métricas clave por contig, como la cobertura promedio (Avg_fold), el porcentaje de bases cubiertas (Covered_percent), y la longitud, generando un reporte tabular listo para su análisis posterior.
 
 ```
-$ pileup.sh in=mapping/aligned.sam.gz out=mapping/coverage.txt 2>&1  | tee mapping/log_coverage.log
+$ pileup.sh in=mapping/aligned.sam.gz out=mapping/coverage.txt 
 ```
 
+```
+* in=	Archivo de entrada con las lecturas alineadas (en formato SAM comprimido). Este archivo debe haber sido generado previamente por bbmap.sh o una herramienta de mapeo.
+* out=	Archivo de salida que contendrá las estadísticas de cobertura por contig. Se genera en formato texto tabulado.
+```
 ## Calculo de metricas de los ensambles (contigs) con [MetaQuast](https://quast.sourceforge.net/metaquast)
 MetaQuast evalúa la calidad de los ensambles generados por MEGAHIT (u otros ensambladores), calculando métricas clave como el tamaño total del ensamble, el número de contigs, la longitud de N50 y la detección de errores como misassemblies. Proporciona reportes HTML interactivos y tablas resumen que permiten visualizar y comparar datos estadisticos del ensamble.
 
@@ -83,6 +182,9 @@ MetaQuast evalúa la calidad de los ensambles generados por MEGAHIT (u otros ens
 metaquast.py -o metaquast/final.contigs.fa
 ```
 
+```
+
+```
 ## Anotación funcional con [PROKKA](https://github.com/tseemann/prokka)
 La anotación funcional con PROKKA es un proceso automatizado que predice y describe genes en secuencias de contigs, identificando elementos genómicos como genes codificantes de proteínas (CDS), ARN ribosomal (rRNA), ARN de transferencia (tRNA) y otros elementos funcionales. Utiliza la herramienta Prodigal (para predicción de genes) y bases de datos como UniProt, Pfam y NCBI para asignar nombres de genes, productos génicos y números EC (Enzyme Commission), generando archivos de salida estandarizados (GBK, GFF, FAA)
 
