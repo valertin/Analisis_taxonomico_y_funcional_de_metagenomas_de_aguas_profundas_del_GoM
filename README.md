@@ -269,7 +269,7 @@ $ bracken \
 ```
 Uso de R y R studio
 ```
-![protozoa+pie](https://github.com/user-attachments/assets/71aaae5b-5cd6-4756-8983-9bf5fcbd66cb) | <img width="740" height="605" alt="KEGG2+PCA" src="https://github.com/user-attachments/assets/d3651cc6-4d39-4263-8372-6634141255c7" />
+![protozoa+pie](https://github.com/user-attachments/assets/71aaae5b-5cd6-4756-8983-9bf5fcbd66cb)  <img width="740" height="605" alt="KEGG2+PCA" src="https://github.com/user-attachments/assets/d3651cc6-4d39-4263-8372-6634141255c7" />
 
 Fig. 2 Ejemplos de gráficos que se pueden realizar en R con los resultados obtenidos del análisis de secuencias.
 
